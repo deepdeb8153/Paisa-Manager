@@ -1,0 +1,344 @@
+<!DOCTYPE html>
+<html lang="en"><head><meta charset="utf-8">
+<meta name="viewport" content="width=device-width,initial-scale=1,viewport-fit=cover">
+<meta name="theme-color" content="#0b0a1f"><link rel="manifest" href="manifest.webmanifest">
+<title>Paisa Manager</title>
+<style>
+:root{--nb:rgba(22,20,52,.6);--bg:#0b0a1f;--c:#161434;--c2:#201d48;--bd:#2f2b63;--tx:#f2f0ff;--mu:#9a96c7;--ac:#8b5cf6;--in:#34d399;--ex:#fb5c8a;--sv:#60a5fa;color-scheme:dark}
+[data-t=light]{--nb:rgba(255,255,255,.65);--bg:#f3f2fb;--c:#fff;--c2:#ece9fb;--bd:#dcd8f3;--tx:#1a1740;--mu:#6b678f;color-scheme:light}
+*{box-sizing:border-box;-webkit-tap-highlight-color:transparent}
+body{margin:0;font:15px/1.4 'Avenir Next','Segoe UI',Roboto,sans-serif;background:var(--bg);color:var(--tx);padding-bottom:calc(90px + env(safe-area-inset-bottom))}
+#app{max-width:640px;margin:0 auto;padding:calc(62px + env(safe-area-inset-top)) 14px 0}
+h1{font-size:26px;margin:0}h2{font-size:16px;margin:0 0 10px}h3{margin:0 0 10px}small{color:var(--mu)}
+.card{background:var(--c);border:1px solid var(--bd);border-radius:20px;padding:14px;margin-bottom:12px}
+.hero{background:linear-gradient(135deg,#3b1d8f,#1a1445 70%);border-color:#5b3bd1;color:#f2f0ff}
+.hero small{color:#c4bdf0}.big{font-size:34px;font-weight:800;color:var(--in);letter-spacing:-.5px}
+.hd{display:flex;align-items:center;gap:10px;margin-bottom:14px}.hd .g{flex:1}
+.ib{width:42px;height:42px;border-radius:14px;background:var(--c);border:1px solid var(--bd);color:var(--tx);font-size:18px}
+.grid3{display:grid;grid-template-columns:repeat(2,1fr);gap:8px;margin-bottom:12px}
+.grid3 .card{margin:0;padding:12px}.grid3 b{display:block;font-size:15px;margin-top:3px}
+.two{display:grid;grid-template-columns:1fr 1fr;gap:8px}
+.btn{display:block;width:100%;border:0;border-radius:14px;padding:13px;margin-top:10px;background:var(--ac);color:#fff;font:600 15px inherit;cursor:pointer;text-align:center}
+.btn.ghost{background:var(--c2);color:var(--tx)}.btn.red{background:var(--ex)}.btn.in{background:#10a37a}.btn.sm{padding:8px;margin:0;font-size:13px}
+input,select,textarea{width:100%;padding:12px;border-radius:12px;border:1px solid var(--bd);background:var(--c2);color:var(--tx);font:inherit;margin-top:4px}
+label{display:block;margin-top:10px;font-size:13px;color:var(--mu)}input[type=checkbox]{width:auto;margin:0}
+.seg{display:flex;background:var(--c2);border-radius:14px;padding:3px;margin-bottom:12px}
+.seg button{flex:1;border:0;background:none;color:var(--mu);padding:9px;border-radius:11px;font:600 13px inherit}
+.seg button.on{background:var(--ac);color:#fff}
+.tr{display:flex;align-items:center;gap:10px;padding:10px 0;border-bottom:1px solid var(--bd)}.tr:last-child{border:0}
+.ic{width:40px;height:40px;border-radius:13px;display:grid;place-items:center;font-size:19px;background:var(--c2);flex:none}
+.mid{flex:1;min-width:0}.mid b,.mid small{display:block;overflow:hidden;text-overflow:ellipsis;white-space:nowrap}
+.am{font-weight:700}.am.in{color:var(--in)}.am.ex{color:var(--ex)}
+.mini{border:0;background:var(--c2);color:var(--tx);border-radius:9px;padding:5px 8px;font-size:13px;margin-left:4px}
+.row{display:flex;align-items:center;gap:10px;padding:10px 0;border-bottom:1px solid var(--bd)}
+.bar{height:8px;background:var(--c2);border-radius:8px;overflow:hidden;margin-top:6px}.bar i{display:block;height:100%;border-radius:8px}
+.bars{display:flex;gap:6px;align-items:flex-end;height:150px;overflow-x:auto}
+.bc{flex:1;min-width:30px;display:flex;flex-direction:column;align-items:center;gap:4px;height:100%;justify-content:flex-end}
+.bb{flex:1;width:100%;display:flex;gap:2px;align-items:flex-end}.bb i{flex:1;border-radius:5px 5px 0 0;min-height:2px}
+.bc span{font-size:10px;color:var(--mu)}
+.dot{width:10px;height:10px;border-radius:50%;display:inline-block;margin-right:6px}
+.av{border-radius:50%;object-fit:cover;display:inline-grid;place-items:center;flex:none}
+.ban{height:150px;border-radius:16px;background:linear-gradient(120deg,#6d3df2,#ec4899) center/cover}
+.chat{height:calc(100dvh - 300px);min-height:300px;overflow-y:auto;scroll-behavior:smooth;padding:6px 2px}
+.sep{text-align:center;margin:14px 0 8px}.sep span{background:var(--c2);color:var(--mu);font-size:12px;padding:3px 12px;border-radius:12px}
+.bub{max-width:78%;padding:10px 12px;border-radius:18px;margin:6px 0;position:relative}
+.bub.in{background:rgba(52,211,153,.15);border:1px solid var(--in);border-bottom-left-radius:4px;margin-right:auto}
+.bub.ex{background:rgba(139,92,246,.22);border:1px solid var(--ac);border-bottom-right-radius:4px;margin-left:auto}
+.bub.tr{background:var(--c2);margin:6px auto;text-align:center}
+.bub b{font-size:17px}.bub small{display:block}
+nav{position:fixed;bottom:0;left:0;right:0;display:flex;background:var(--nb);backdrop-filter:blur(16px);-webkit-backdrop-filter:blur(16px);border-top:1px solid var(--bd);padding:6px 4px calc(6px + env(safe-area-inset-bottom));z-index:50}
+nav button{flex:1;border:0;background:none;color:var(--mu);font-size:11px;padding:4px}nav button span{display:block;font-size:20px}nav button.on{color:var(--ac);font-weight:700}
+#fab{position:fixed;right:18px;bottom:calc(84px + env(safe-area-inset-bottom));width:56px;height:56px;border-radius:50%;border:0;background:linear-gradient(135deg,#8b5cf6,#6d3df2);color:#fff;font-size:30px;box-shadow:0 8px 24px rgba(109,61,242,.5);z-index:6}
+#ov{display:none;position:fixed;inset:0;background:rgba(0,0,0,.6);z-index:10;align-items:flex-end;justify-content:center}
+#sh{background:var(--c);width:100%;max-width:640px;max-height:calc(100dvh - 60px - env(safe-area-inset-top));overflow-y:auto;border-radius:24px 24px 0 0;padding:18px 16px calc(96px + env(safe-area-inset-bottom));animation:up .22s ease}
+@keyframes up{from{transform:translateY(40px);opacity:0}}
+#toast{position:fixed;left:50%;transform:translateX(-50%);bottom:150px;background:#222;color:#fff;padding:9px 15px;border-radius:18px;font-size:13px;z-index:20;max-width:90%;display:none}
+.empty{text-align:center;color:var(--mu);padding:24px}.avg{display:flex;flex-wrap:wrap;gap:6px}.avg button{width:44px;height:44px;border-radius:12px;border:2px solid transparent;background:var(--c2);font-size:24px}.avg button.on{border-color:var(--ac)}
+.sw{display:flex;gap:8px;flex-wrap:wrap}.sw button{width:30px;height:30px;border-radius:50%;border:2px solid transparent}.sw button.on{border-color:var(--tx)}
+.note{font-size:12px;color:var(--mu);margin-top:8px}.tg{display:flex;justify-content:space-between;align-items:center;padding:9px 0;border-bottom:1px solid var(--bd)}
+#nb{position:fixed;top:calc(10px + env(safe-area-inset-top));left:12px;right:12px;max-width:616px;margin:0 auto;background:var(--c);color:var(--tx);border:1px solid var(--ac);border-radius:16px;padding:12px 14px;z-index:30;display:none;box-shadow:0 10px 30px rgba(0,0,0,.4);animation:dn .25s ease}@keyframes dn{from{transform:translateY(-30px);opacity:0}}
+#tb{position:fixed;top:0;left:0;right:0;z-index:40;padding:env(safe-area-inset-top) 12px 0;height:calc(46px + env(safe-area-inset-top));display:flex;align-items:center;justify-content:center;font-weight:800;font-size:18px;letter-spacing:.3px;background:var(--nb);backdrop-filter:blur(16px);-webkit-backdrop-filter:blur(16px);border-bottom:1px solid var(--bd)}
+#mb{position:absolute;left:10px;top:calc(env(safe-area-inset-top) + 4px);width:38px;height:38px;border:0;border-radius:12px;background:transparent;color:var(--tx);font-size:24px;line-height:1}
+#dr{position:fixed;inset:0;z-index:70;background:rgba(0,0,0,0);visibility:hidden;transition:background .25s,visibility .25s}
+#dr.on{background:rgba(0,0,0,.55);visibility:visible}
+#dp{position:absolute;top:0;bottom:0;left:0;width:min(82vw,320px);background:var(--c);border-right:1px solid var(--bd);transform:translateX(-100%);transition:transform .25s ease;padding:calc(22px + env(safe-area-inset-top)) 16px 20px;overflow-y:auto}
+#dr.on #dp{transform:none}
+.dm{display:flex;align-items:center;gap:12px;padding:15px 6px;border-bottom:1px solid var(--bd);font-size:16px;cursor:pointer}.dm span{font-size:20px}
+</style></head><body>
+<div id="tb"><button id="mb" onclick="drawer(1)" aria-label="Menu">☰</button>Paisa Manager</div><div id="app"></div>
+<button id="fab" onclick="tf()" aria-label="Add transaction">+</button>
+<nav><button data-v="home" onclick="go('home')"><span>🏠</span>Home</button><button data-v="tx" onclick="go('tx')"><span>🧾</span>Transactions</button><button data-v="an" onclick="go('an')"><span>📊</span>Analytics</button><button data-v="pf" onclick="go('pf')"><span>👤</span>Profiles</button><button data-v="more" onclick="go('more')"><span>⚙️</span>More</button></nav>
+<div id="ov" onclick="if(event.target===this)shut()"><div id="sh"></div></div><div id="toast"></div><div id="dr" onclick="if(event.target===this)drawer(0)"><div id="dp"><div style="font-size:20px;font-weight:800">💰 Paisa Manager</div><small>Manage your money</small><div style="margin-top:14px"><div class="dm" onclick="menu(privForm)"><span>🔒</span>Privacy Policy</div><div class="dm" onclick="menu(contactForm)"><span>✉️</span>Contact us</div><div class="dm" onclick="menu(rateForm)"><span>⭐</span>Rate the app</div></div><button class="btn ghost" style="margin-top:22px" onclick="drawer(0)">Close</button></div></div><div id="nb" onclick="this.style.display='none';notifCenter()"></div>
+<script>
+'use strict';
+const K='pm_v1',$=s=>document.querySelector(s);let S,view='home',mode='list',IMG={},F,PE,AP='m',FL={q:'',c:'',a:'',f:'',t:''};
+const esc=s=>String(s==null?'':s).replace(/[&<>"']/g,c=>({'&':'&amp;','<':'&lt;','>':'&gt;','"':'&quot;',"'":'&#39;'}[c]));
+const f=n=>'₹'+Number(n||0).toLocaleString('en-IN',{maximumFractionDigits:2});
+const uid=()=>Math.random().toString(36).slice(2,9)+Date.now().toString(36).slice(-3),pad=n=>String(n).padStart(2,'0');
+const ds=d=>d.getFullYear()+'-'+pad(d.getMonth()+1)+'-'+pad(d.getDate()),tm=d=>pad(d.getHours())+':'+pad(d.getMinutes());
+const COL=['#8b5cf6','#ec4899','#3b82f6','#22c55e','#f59e0b','#94a3b8','#14b8a6','#ef4444'];
+const EM={Food:'🍔',Rent:'🏠',EMI:'🏦','Credit Card Bill':'💳',Friend:'🤝',Travel:'✈️','Udhaar Diya':'🤲',Transport:'🚌',Shopping:'🛍️',Bills:'🧾',Health:'💊',Salary:'💼',Bonus:'🎁'};
+const emo=t=>t.type==='tr'?'🔁':EM[t.cat]||(t.type==='in'?'💰':'🏷️');
+function np(id,n){return{id,name:n,av:'🙂',bg:'theme',acc:[{id:'a1',n:'Cash',s:0},{id:'a2',n:'Bank',s:0},{id:'a3',n:'UPI / Online',s:0},{id:'a4',n:'Credit Card',s:0}],ce:['Food','Rent','EMI','Credit Card Bill','Friend','Travel','Udhaar Diya','Transport','Shopping','Bills','Health','Other'],ci:['Salary','Kisi ne diya','Udhaar wapas mila','Bonus','Other'],tx:[],bud:{},lim:0}}
+function load(){let raw=null;try{raw=localStorage.getItem(K);S=JSON.parse(raw)}catch(e){S=null;if(raw)try{localStorage.setItem(K+'_corrupt_backup',raw)}catch(x){}}
+if(!S||!Array.isArray(S.p)||!S.p.length)S={a:'p1',p:[np('p1','Personal')]};
+S.th=S.th==='light'?'light':'dark';S.n=Object.assign({tx:1,daily:1,dailyT:'21:00',budget:1,over:1,cat:1,lastDaily:'',lastBud:''},S.n||{});S.rem=S.rem||[];S.nl=S.nl||[];
+delete S.sh;delete S.q;
+S.p.forEach(p=>{p.av=p.av||'🙂';p.bg=(!p.bg||p.bg==='#ede9fe')?'theme':p.bg;p.tx=p.tx||[];p.bud=p.bud||{};p.lim=+p.lim||0;p.acc=p.acc||[];p.ce=p.ce||[];p.ci=p.ci||[];p.tx.forEach(t=>{t.time=t.time||'00:00';t.amt=+t.amt||0})});
+if(!S.p.some(p=>p.id===S.a))S.a=S.p[0].id}
+function save(){try{localStorage.setItem(K,JSON.stringify(S))}catch(e){toast('Storage full or blocked – data not saved!')}}
+const P=()=>S.p.find(p=>p.id===S.a)||S.p[0];
+function toast(m){const t=$('#toast');t.textContent=m;t.style.display='block';clearTimeout(toast.h);toast.h=setTimeout(()=>t.style.display='none',3200)}
+function open(h){$('#sh').innerHTML=h;$('#ov').style.display='flex'}function shut(){$('#ov').style.display='none'}
+// ---- IndexedDB for images
+let db;const idb=()=>db||(db=new Promise((ok,no)=>{try{const r=indexedDB.open('mm',1);r.onupgradeneeded=()=>r.result.createObjectStore('img');r.onsuccess=()=>ok(r.result);r.onerror=()=>no(r.error)}catch(e){no(e)}}));
+const dbx=(m,fn)=>idb().then(d=>new Promise((ok,no)=>{const t=d.transaction('img',m),q=fn(t.objectStore('img'));t.oncomplete=()=>ok(q&&q.result);t.onerror=()=>no(t.error)}));
+const tmo=(p,ms)=>Promise.race([p,new Promise((_,no)=>setTimeout(()=>no(new Error('timeout')),ms||2500))]);
+const b2u=b=>new Promise((ok,no)=>{const r=new FileReader();r.onload=()=>ok(r.result);r.onerror=()=>no(r.error);r.readAsDataURL(b)});
+const LSI='pm_img_';
+async function iput(k,v){try{await tmo(dbx('readwrite',s=>s.put(v,k)));try{localStorage.removeItem(LSI+k)}catch(e){}return}catch(e){}const u=await b2u(v);localStorage.setItem(LSI+k,u)}
+async function iget(k){try{const b=await tmo(dbx('readonly',s=>s.get(k)));if(b)return b}catch(e){}try{const u=localStorage.getItem(LSI+k);return u?u2b(u):null}catch(e){return null}}
+async function idel(k){try{await tmo(dbx('readwrite',s=>s.delete(k)))}catch(e){}try{localStorage.removeItem(LSI+k)}catch(e){}}
+async function loadImgs(){for(const p of S.p)for(const k of['pic:','ban:']){try{const b=await iget(k+p.id);if(b)IMG[k+p.id]=URL.createObjectURL(b)}catch(e){}}try{const b=await iget('bg:app');if(b)IMG['bg:app']=URL.createObjectURL(b)}catch(e){}applyBg();render()}
+// ---- calculations
+const mr=d=>[ds(new Date(d.getFullYear(),d.getMonth(),1)),ds(new Date(d.getFullYear(),d.getMonth()+1,0))];
+const sum=(ty,a,b)=>P().tx.filter(t=>t.type===ty&&t.date>=a&&t.date<=b).reduce((s,t)=>s+t.amt,0);
+function cats(a,b){const o={};P().tx.forEach(t=>{if(t.type==='ex'&&t.date>=a&&t.date<=b)o[t.cat]=(o[t.cat]||0)+t.amt});return Object.entries(o).sort((x,y)=>y[1]-x[1])}
+function accEx(a,b){const o={};P().tx.forEach(t=>{if(t.type==='ex'&&t.date>=a&&t.date<=b)o[t.acc]=(o[t.acc]||0)+t.amt});return o}
+function bal(a){let b=+a.s||0;P().tx.forEach(t=>{if(t.type==='in'&&t.acc===a.id)b+=t.amt;if(t.type==='ex'&&t.acc===a.id)b-=t.amt;if(t.type==='tr'){if(t.acc===a.id)b-=t.amt;if(t.to===a.id)b+=t.amt}});return b}
+const an=id=>{const a=P().acc.find(x=>x.id===id);return a?a.n:'?'};
+function buckets(k,n){const o=[],N=new Date(),y=N.getFullYear(),m=N.getMonth(),d=N.getDate();for(let i=n-1;i>=0;i--){let a,b,l;
+if(k==='d'){a=b=new Date(y,m,d-i);l=a.getDate()+'/'+(a.getMonth()+1)}
+else if(k==='w'){b=new Date(y,m,d-7*i);a=new Date(y,m,d-7*i-6);l=a.getDate()+'/'+(a.getMonth()+1)}
+else if(k==='m'){a=new Date(y,m-i,1);b=new Date(y,m-i+1,0);l=a.toLocaleString('en',{month:'short'})}
+else{a=new Date(y-i,0,1);b=new Date(y-i,11,31);l=''+a.getFullYear()}
+const x=ds(a),z=ds(b);o.push({l,i:sum('in',x,z),e:sum('ex',x,z)})}return o}
+function range(k){const N=new Date(),t=ds(N);if(k==='d')return[t,t];if(k==='w')return[ds(new Date(N.getFullYear(),N.getMonth(),N.getDate()-6)),t];if(k==='m')return mr(N);return[N.getFullYear()+'-01-01',N.getFullYear()+'-12-31']}
+// ---- chart helpers
+function bars(B,two){const mx=Math.max(1,...B.map(b=>Math.max(b.e,two?b.i:0)));return`<div class="bars">${B.map(b=>`<div class="bc" onclick="toast('${esc(b.l)}: ${two?'Income '+f(b.i)+' · ':''}Expense ${f(b.e)}')"><div class="bb">${two?`<i style="height:${b.i/mx*100}%;background:var(--in)"></i>`:''}<i style="height:${b.e/mx*100}%;background:var(--ex)"></i></div><span>${esc(b.l)}</span></div>`).join('')}</div>`}
+function line(B){const v=B.map(b=>b.i-b.e),mx=Math.max(1,...v.map(Math.abs)),W=300,H=100,st=W/Math.max(1,v.length-1),y=x=>H/2-x/mx*(H/2-8);
+return`<svg viewBox="0 0 ${W} ${H}" style="width:100%"><line x1="0" x2="${W}" y1="${H/2}" y2="${H/2}" stroke="var(--bd)" stroke-dasharray="4"/><polyline fill="none" stroke="var(--sv)" stroke-width="2.5" points="${v.map((x,i)=>i*st+','+y(x)).join(' ')}"/>${v.map((x,i)=>`<circle cx="${i*st}" cy="${y(x)}" r="3.5" fill="${x<0?'var(--ex)':'var(--in)'}"/>`).join('')}</svg><div style="display:flex;justify-content:space-between">${B.map(b=>`<small style="font-size:10px">${esc(b.l)}</small>`).join('')}</div>`}
+function donut(L,tot){const C=2*Math.PI*40;let o=0;return`<svg viewBox="0 0 100 100" width="150" height="150" style="flex:none"><g transform="rotate(-90 50 50)" fill="none" stroke-width="16">${L.map(([c,v],i)=>{const l=v/tot*C,s=`<circle cx="50" cy="50" r="40" stroke="${COL[i%COL.length]}" stroke-dasharray="${l} ${C-l}" stroke-dashoffset="${-o}"/>`;o+=l;return s}).join('')}</g><text x="50" y="49" text-anchor="middle" fill="var(--tx)" font-size="9" font-weight="700">${f(tot)}</text><text x="50" y="60" text-anchor="middle" fill="var(--mu)" font-size="6">Total</text></svg>`}
+function catList(L,tot){return L.map(([c,v],i)=>`<div style="margin:9px 0"><div style="display:flex;justify-content:space-between"><span><i class="dot" style="background:${COL[i%COL.length]}"></i>${esc(c)}</span><span>${f(v)} <small>${Math.round(v/tot*100)}%</small></span></div><div class="bar"><i style="width:${v/tot*100}%;background:${COL[i%COL.length]}"></i></div></div>`).join('')}
+const avh=(src,e,bg,s)=>src?`<img class="av" style="width:${s}px;height:${s}px" src="${src}" alt="">`:`<span class="av" style="width:${s}px;height:${s}px;background:${bg&&bg!=='theme'&&bg!=='#ede9fe'?bg:'var(--c2)'};font-size:${s*.55}px">${e}</span>`;
+const avp=(p,s)=>avh(IMG['pic:'+p.id],p.av,p.bg,s);
+const dl=d=>{const t=new Date(),y=new Date();y.setDate(t.getDate()-1);return d===ds(t)?'Today':d===ds(y)?'Yesterday':new Date(d+'T00:00').toLocaleDateString('en-IN',{day:'numeric',month:'short',year:'numeric'})};
+function row(t){const tr=t.type==='tr';return`<div class="tr"><div class="ic">${emo(t)}</div><div class="mid"><b>${esc(tr?'Transfer':t.cat)}</b><small>${esc(an(t.acc))}${tr?' → '+esc(an(t.to)):''} · ${t.time}${t.note?' · '+esc(t.note):''}</small></div><div class="am ${t.type}">${t.type==='in'?'+':t.type==='ex'?'−':''}${f(t.amt)}</div><button class="mini" onclick="tf('${t.id}')" aria-label="Edit">✎</button><button class="mini" onclick="delTx('${t.id}')" aria-label="Delete">🗑</button></div>`}
+function bub(t){const tr=t.type==='tr';return`<div class="bub ${t.type}"><small>${emo(t)} ${esc(tr?'Transfer':t.cat)}</small><b class="am ${t.type}">${t.type==='in'?'+':t.type==='ex'?'−':''}${f(t.amt)}</b><small>${esc(an(t.acc))}${tr?' → '+esc(an(t.to)):''}</small>${t.note?`<div>${esc(t.note)}</div>`:''}<small>${t.time} <button class="mini" onclick="tf('${t.id}')">✎</button><button class="mini" onclick="delTx('${t.id}')">🗑</button></small></div>`}
+// ---- views
+function go(v){view=v;render()}
+function render(){const v={home:vHome,tx:vTx,an:vAn,pf:vPf,more:vMore}[view]();$('#app').innerHTML=v;document.querySelectorAll('nav button').forEach(b=>b.classList.toggle('on',b.dataset.v===view));if(view==='tx')drawTx();document.documentElement.dataset.t=S.th}
+function vHome(){const p=P(),N=new Date(),t=ds(N),[m1,m2]=mr(N),inc=sum('in',m1,m2),exm=sum('ex',m1,m2),td=sum('ex',t,t),tot=p.acc.reduce((s,a)=>s+bal(a),0),aI=sum('in','0000','9999'),aE=sum('ex','0000','9999'),C=cats(m1,m2),lim=p.lim;
+const tdL=p.tx.filter(x=>x.date===t).sort((a,b)=>b.time.localeCompare(a.time)),rec=p.tx.slice().sort((a,b)=>(b.date+b.time).localeCompare(a.date+a.time)).slice(0,5),B=buckets('m',6);
+return`<div class="hd" onclick="go('pf')">${avp(p,46)}<div class="g"><h1>${esc(p.name)}</h1><small>Manage Your Money</small></div></div>
+<div class="card hero"><small>Total Balance</small><div class="big">${f(tot)}</div><small>Income ${f(aI)} · Expenses ${f(aE)}</small><div class="two" style="margin-top:12px"><button class="btn in sm" onclick="tf(null,'in')">⬇ Add Income</button><button class="btn red sm" onclick="tf(null,'ex')">⬆ Add Expense</button></div></div>
+<div class="card"><b style="font-size:18px">Today's Expense: ${f(td)}</b>${lim?`<div class="bar"><i style="width:${Math.min(100,exm/lim*100)}%;background:${exm>lim?'var(--ex)':'var(--ac)'}"></i></div><small>Month ${f(exm)} of ${f(lim)} limit</small>`:''}</div>
+<div class="grid3"><div class="card"><small>Income</small><b style="color:var(--in)">${f(inc)}</b><small>Month</small></div><div class="card"><small>Expenses</small><b style="color:var(--ex)">${f(exm)}</b><small>Month</small></div></div>
+<div class="card"><h2>Account Balances</h2>${p.acc.map(a=>`<div class="row"><span style="flex:1">${esc(a.n)}</span><b>${f(bal(a))}</b></div>`).join('')||'<div class="empty">No accounts</div>'}</div>
+<div class="card"><h2>Expense Breakdown · This Month</h2>${C.length?`<div style="display:flex;gap:10px;align-items:center;flex-wrap:wrap;justify-content:center">${donut(C,exm)}<div style="flex:1;min-width:170px">${catList(C,exm)}</div></div>`:'<div class="empty">No expenses this month</div>'}</div>
+<div class="card"><h2>Monthly Spending</h2>${bars(B,false)}</div>
+<div class="card"><h2>Income vs Expense</h2>${bars(B,true)}<small><i class="dot" style="background:var(--in)"></i>Income <i class="dot" style="background:var(--ex)"></i>Expense</small></div>
+<div class="card"><h2>Today Transactions</h2>${tdL.map(row).join('')||'<div class="empty">Nothing recorded today</div>'}</div>
+<div class="card"><h2>Recent Transactions</h2>${rec.map(row).join('')||'<div class="empty">No transactions yet. Tap + to add one.</div>'}</div>`}
+function vTx(){const p=P();return`<h1 style="margin-bottom:10px">Transactions</h1><input id="fq" placeholder="🔍 Search note, category, amount" value="${esc(FL.q)}" oninput="FL.q=this.value;drawTx()">
+<details class="card" style="margin-top:10px"><summary>Filters</summary><div class="two"><div><label>Category</label><select onchange="FL.c=this.value;drawTx()"><option value="">All</option>${[...new Set([...p.ce,...p.ci])].map(c=>`<option ${FL.c===c?'selected':''}>${esc(c)}</option>`).join('')}</select></div><div><label>Account</label><select onchange="FL.a=this.value;drawTx()"><option value="">All</option>${p.acc.map(a=>`<option value="${a.id}" ${FL.a===a.id?'selected':''}>${esc(a.n)}</option>`).join('')}</select></div><div><label>From</label><input type="date" value="${FL.f}" onchange="FL.f=this.value;drawTx()"></div><div><label>To</label><input type="date" value="${FL.t}" onchange="FL.t=this.value;drawTx()"></div></div><button class="btn ghost sm" style="margin-top:10px" onclick="FL={q:'',c:'',a:'',f:'',t:''};render()">Clear filters</button></details>
+<div class="seg"><button class="${mode==='list'?'on':''}" onclick="mode='list';render()">☰ List</button><button class="${mode==='chat'?'on':''}" onclick="mode='chat';render()">💬 Chat timeline</button></div><div id="txl"></div>`}
+function drawTx(){const q=FL.q.trim().toLowerCase();const L=P().tx.filter(t=>(!q||[t.note,t.cat,String(t.amt)].join(' ').toLowerCase().includes(q))&&(!FL.c||t.cat===FL.c)&&(!FL.a||t.acc===FL.a||t.to===FL.a)&&(!FL.f||t.date>=FL.f)&&(!FL.t||t.date<=FL.t)).sort((a,b)=>(a.date+a.time).localeCompare(b.date+b.time)),el=$('#txl');
+if(!el)return;if(!L.length){el.className='';el.innerHTML='<div class="empty">No transactions found</div>';return}
+let last='';if(mode==='chat'){el.className='chat';el.innerHTML=L.map(t=>{let h='';if(t.date!==last){last=t.date;h=`<div class="sep"><span>${dl(t.date)}</span></div>`}return h+bub(t)}).join('');el.scrollTop=el.scrollHeight}
+else{el.className='';el.innerHTML=L.reverse().map(t=>{let h='';if(t.date!==last){last=t.date;h=`<div class="sep" style="text-align:left"><span>${dl(t.date)}</span></div>`}return h+row(t)}).join('')}}
+function vAn(){const p=P(),N=new Date(),[a,b]=range(AP),C=cats(a,b),tot=C.reduce((s,x)=>s+x[1],0),n={d:7,w:8,m:12,y:5}[AP],B=buckets(AP,n),ae=accEx(a,b),[m1,m2]=mr(N);
+const sm=['d','w','m','y'].map(k=>{const[x,y]=range(k);return`<div class="card" style="margin:0"><small>${{d:'Daily',w:'Weekly (7d)',m:'Monthly',y:'Yearly'}[k]}</small><b style="display:block">${f(sum('ex',x,y))}</b></div>`}).join('');
+const bc=cats(m1,m2),bl=Object.keys(p.bud).filter(c=>p.bud[c]>0);
+return`<h1 style="margin-bottom:10px">Analytics</h1><div class="seg">${[['d','Daily'],['w','Weekly'],['m','Monthly'],['y','Yearly']].map(([k,l])=>`<button class="${AP===k?'on':''}" onclick="AP='${k}';render()">${l}</button>`).join('')}</div>
+<div class="two" style="margin-bottom:12px">${sm}</div>
+<div class="card"><h2>Income vs Expenses</h2>${bars(B,true)}<small><i class="dot" style="background:var(--in)"></i>Income <i class="dot" style="background:var(--ex)"></i>Expense · tap a bar</small></div>
+
+<div class="card"><h2>Spending by Category</h2>${C.length?`<p>Highest: <b>${esc(C[0][0])}</b> · ${f(C[0][1])} (${Math.round(C[0][1]/tot*100)}%)</p>${catList(C,tot)}`:'<div class="empty">No expenses in this period</div>'}</div>
+<div class="card"><h2>Account-wise Expenses</h2>${p.acc.map(x=>`<div class="row"><span style="flex:1">${esc(x.n)}</span><b>${f(ae[x.id]||0)}</b></div>`).join('')}</div>
+<div class="card"><h2>Budget vs Actual · This Month</h2>${budRow('Total limit',sum('ex',m1,m2),p.lim,'__total')}${p.ce.map(c=>budRow(c,(bc.find(x=>x[0]===c)||[0,0])[1],p.bud[c]||0,c)).join('')}<p class="note">Tap an item to set its monthly budget.</p></div>`}
+function budRow(l,s,b,k){const pc=b?Math.min(100,s/b*100):0;return`<div style="margin:10px 0" onclick="bform('${esc(k).replace(/'/g,'')}')"><div style="display:flex;justify-content:space-between"><span>${esc(l)}</span><span>${f(s)} / ${b?f(b):'set'}</span></div><div class="bar"><i style="width:${pc}%;background:${b&&s>b?'var(--ex)':pc>=80?'#f59e0b':'var(--in)'}"></i></div></div>`}
+function bform(k){const p=P();const c=k==='__total'?null:p.ce.find(x=>x.replace(/'/g,'')===k);const v=c===null?p.lim:p.bud[c]||'';open(`<h3>Budget: ${c===null?'Monthly total':esc(c)}</h3><label>Monthly budget (₹)</label><input id="bv" type="number" min="0" inputmode="decimal" value="${v||''}"><button class="btn" onclick="saveBud(${c===null?'null':`'${k}'`})">Save</button><button class="btn ghost" onclick="shut()">Cancel</button>`)}
+function saveBud(k){const p=P(),v=parseFloat($('#bv').value)||0;if(v<0||v>1e10){toast('Invalid amount');return}if(k===null)p.lim=v;else{const c=p.ce.find(x=>x.replace(/'/g,'')===k);if(c)p.bud[c]=v}save();shut();render()}
+function vPf(){return`<div class="hd"><h1 class="g">Profiles</h1><button class="btn sm" style="width:auto;margin:0;padding:10px 14px" onclick="switchForm()">🔄 Switch profile</button></div>${[P()].map(p=>`<div class="card" style="padding:0;overflow:hidden"><div class="ban" style="border-radius:0;${banS(IMG['ban:'+p.id],p.bc)}"></div><div style="padding:0 14px 14px"><div style="display:flex;align-items:flex-start;gap:12px;margin-top:-34px"><span style="border:3px solid var(--c);border-radius:50%;display:inline-flex">${avp(p,64)}</span><div style="flex:1;margin-top:38px"><b style="font-size:17px">${esc(p.name)}</b><br><small>${p.tx.length} transactions${p.id===S.a?' · active':''}</small></div></div><div class="two" style="margin-top:10px">${p.id===S.a?'<button class="btn ghost sm" disabled>✓ Active</button>':`<button class="btn sm" onclick="S.a='${p.id}';save();render()">Switch</button>`}<button class="btn ghost sm" onclick="peForm('${p.id}')">Edit</button></div></div></div>`).join('')}<button class="btn" onclick="peForm(null)">+ New profile</button>`}
+function vMore(){return`<h1 style="margin-bottom:10px">More</h1><div class="card"><div class="tg"><span>${S.th==='dark'?'🌙 Dark mode':'☀️ Light mode'}</span><button class="btn sm" style="width:auto;padding:8px 16px" onclick="S.th=S.th==='dark'?'light':'dark';save();render()">Switch</button></div>
+<div class="tg" onclick="bgForm()"><span>🎨 App background</span><span>›</span></div><div class="tg" onclick="accForm()"><span>🏦 Accounts</span><span>›</span></div><div class="tg" onclick="catForm()"><span>🏷️ Categories</span><span>›</span></div><div class="tg" onclick="backupForm()" style="border:0"><span>💾 Backup &amp; Restore</span><span>›</span></div></div>
+`}
+// ---- transactions
+function tf(id,ty){const p=P();if(!p.acc.length){toast('Add an account first');accForm();return}const t=id?p.tx.find(x=>x.id===id):null;const N=new Date();F=t?Object.assign({},t):{id:null,type:ty||'ex',amt:'',cat:'',acc:p.acc[0].id,to:(p.acc[1]||p.acc[0]).id,note:'',date:ds(N),time:tm(N)};drawF()}
+function keep(){const g=i=>{const e=document.getElementById(i);return e?e.value:null};F.amt=g('fa')??F.amt;F.cat=g('fc')||F.cat;F.cn=g('fcn')||'';F.acc=g('fac')||F.acc;F.to=g('fto')||F.to;F.date=g('fd')||F.date;F.time=g('ft')||F.time;F.note=g('fn')??F.note}
+function swT(x){keep();F.type=x;F.cat='';drawF()}
+function drawF(){const p=P(),tr=F.type==='tr',L=F.type==='in'?p.ci:p.ce;if(!tr&&F.cat!=='__new'&&!L.includes(F.cat))F.cat=L[0]||'__new';const ao=v=>p.acc.map(a=>`<option value="${a.id}" ${a.id===v?'selected':''}>${esc(a.n)}</option>`).join('');
+open(`<h3>${F.id?'Edit':'Add'} transaction</h3><div class="seg">${[['ex','Expense'],['in','Income'],...(F.type==='tr'?[['tr','Transfer']]:[])].map(([k,l])=>`<button class="${F.type===k?'on':''}" onclick="swT('${k}')">${l}</button>`).join('')}</div>
+<label>Amount (₹)</label><input id="fa" type="number" min="0" step="0.01" inputmode="decimal" value="${esc(F.amt)}">
+${tr?'':`<label>Category</label><select id="fc" onchange="keep();drawF()">${L.map(c=>`<option ${c===F.cat?'selected':''}>${esc(c)}</option>`).join('')}<option value="__new" ${F.cat==='__new'?'selected':''}>+ New category…</option></select>${F.cat==='__new'?`<input id="fcn" maxlength="30" placeholder="Category name" value="${esc(F.cn||'')}">`:''}`}
+<label>${tr?'From account':'Account'}</label><select id="fac">${ao(F.acc)}</select>${tr?`<label>To account</label><select id="fto">${ao(F.to)}</select>`:''}
+<div class="two"><div><label>Date</label><input id="fd" type="date" value="${F.date}" onclick="try{this.showPicker()}catch(e){}"></div><div><label>Time</label><input id="ft" type="time" value="${F.time}" onclick="try{this.showPicker()}catch(e){}"></div></div>
+<div class="two" style="margin-top:8px"><button class="btn ghost sm" onclick="document.getElementById('fd').value=ds(new Date())">Today</button><button class="btn ghost sm" onclick="document.getElementById('ft').value=tm(new Date())">Now</button></div>
+<label>Note</label><input id="fn" maxlength="120" value="${esc(F.note)}"><button class="btn" onclick="saveTx()">Save</button>${F.id?`<button class="btn red" onclick="delTx('${F.id}')">Delete</button>`:''}<button class="btn ghost" onclick="shut()">Cancel</button>`)}
+function saveTx(){keep();const p=P(),a=parseFloat(F.amt);if(!(a>0)||a>1e10){toast('Enter a valid amount');return}if(!/^\d{4}-\d{2}-\d{2}$/.test(F.date)||!/^\d{2}:\d{2}$/.test(F.time)){toast('Choose a valid date and time');return}
+if(F.type==='tr'&&F.acc===F.to){toast('Choose two different accounts');return}
+let cat=F.cat;if(F.type!=='tr'&&cat==='__new'){cat=(F.cn||'').trim();if(!cat){toast('Enter category name');return}const li=F.type==='in'?p.ci:p.ce;if(!li.includes(cat))li.push(cat)}
+const t={id:F.id||uid(),type:F.type,amt:a,cat:F.type==='tr'?'':cat,acc:F.acc,to:F.type==='tr'?F.to:'',note:(F.note||'').trim(),date:F.date,time:F.time};
+if(F.id){const i=p.tx.findIndex(x=>x.id===F.id);if(i>=0)p.tx[i]=t}else{p.tx.push(t)}
+save();shut();render();if(!F.id)afterTx(t)}
+function delTx(id){if(!confirm('Delete this transaction? This cannot be undone.'))return;const p=P();p.tx=p.tx.filter(x=>x.id!==id);save();shut();render()}
+function afterTx(t){const p=P();if(S.n.tx)ntf('New '+({in:'income',ex:'expense',tr:'transfer'}[t.type]),f(t.amt)+(t.cat?' · '+t.cat:''));if(t.type!=='ex')return;const[a,b]=mr(new Date()),e=sum('ex',a,b);
+if(p.lim){if(S.n.over&&e>p.lim)ntf('⚠️ Overspending','Month expenses '+f(e)+' exceed limit '+f(p.lim));else if(S.n.budget&&e>=p.lim*.8)ntf('Budget alert','You used '+Math.round(e/p.lim*100)+'% of your monthly budget')}
+const cb=p.bud[t.cat];if(S.n.cat&&cb){const ce=(cats(a,b).find(x=>x[0]===t.cat)||[0,0])[1];if(ce>=cb)ntf('⚠️ '+t.cat+' budget exceeded',f(ce)+' of '+f(cb));else if(ce>=cb*.8)ntf(t.cat+' budget at '+Math.round(ce/cb*100)+'%',f(ce)+' of '+f(cb))}}
+// ---- accounts & categories
+function accForm(){const p=P();open(`<h3>Accounts</h3>${p.acc.map(a=>`<div class="row"><span style="flex:1">${esc(a.n)}<br><small>Opening ${f(a.s)}</small></span><button class="mini" onclick="accEdit('${a.id}')">✎</button><button class="mini" onclick="accDel('${a.id}')">🗑</button></div>`).join('')}<button class="btn" onclick="accEdit(null)">+ Add account</button>`)}
+function accEdit(id){const a=id?P().acc.find(x=>x.id===id):{n:'',s:0};open(`<h3>${id?'Edit':'New'} account</h3><label>Name</label><input id="an" maxlength="30" value="${esc(a.n)}"><label>Opening balance (₹)</label><input id="as" type="number" step="0.01" value="${a.s}"><button class="btn" onclick="accSave('${id||''}')">Save</button><button class="btn ghost" onclick="accForm()">Back</button>`)}
+function accSave(id){const n=$('#an').value.trim(),s=parseFloat($('#as').value)||0,p=P();if(!n){toast('Enter a name');return}if(p.acc.some(x=>x.id!==id&&x.n.toLowerCase()===n.toLowerCase())){toast('Name already used');return}if(id){const a=p.acc.find(x=>x.id===id);a.n=n;a.s=s}else p.acc.push({id:uid(),n,s});save();accForm();render()}
+function accDel(id){const p=P();if(p.tx.some(t=>t.acc===id||t.to===id)){toast('This account has transactions – cannot delete');return}if(p.acc.length<2){toast('Keep at least one account');return}if(!confirm('Delete this account?'))return;p.acc=p.acc.filter(a=>a.id!==id);save();accForm();render()}
+let CK='ce';function catForm(){const p=P();open(`<h3>Categories</h3><div class="seg"><button class="${CK==='ce'?'on':''}" onclick="CK='ce';catForm()">Expense</button><button class="${CK==='ci'?'on':''}" onclick="CK='ci';catForm()">Income</button></div><p class="note" style="margin:0 0 6px">Hold ☰ and drag up or down to change the order.</p><div id="cl">${p[CK].map((c,i)=>`<div class="row"><span class="hdl" style="touch-action:none;cursor:grab;padding:8px 12px 8px 2px;font-size:20px;color:var(--mu);user-select:none">☰</span><span style="flex:1">${esc(c)}</span><button class="mini" onclick="catDel(${i})">🗑</button></div>`).join('')}</div><label>New category</label><input id="nc" maxlength="30"><button class="btn" onclick="catAdd()">Add</button>`);catDrag()}
+function catDrag(){const box=$('#cl');if(!box)return;box.querySelectorAll('.hdl').forEach(h=>{h.onpointerdown=e=>{e.preventDefault();const row=h.parentElement,rows=[...box.children],from=rows.indexOf(row),hg=row.offsetHeight||44,y0=e.clientY;let to=from;h.setPointerCapture(e.pointerId);row.style.position='relative';row.style.zIndex=5;row.style.background='var(--c2)';row.style.boxShadow='0 6px 18px rgba(0,0,0,.35)';
+h.onpointermove=ev=>{const dy=ev.clientY-y0;row.style.transform='translateY('+dy+'px)';to=Math.max(0,Math.min(rows.length-1,from+Math.round(dy/hg)));rows.forEach((r,i)=>{if(r===row)return;let s=0;if(from<to&&i>from&&i<=to)s=-hg;else if(from>to&&i<from&&i>=to)s=hg;r.style.transition='transform .12s';r.style.transform=s?'translateY('+s+'px)':''})};
+h.onpointerup=h.onpointercancel=()=>{h.onpointermove=h.onpointerup=h.onpointercancel=null;if(to!==from){const L=P()[CK],m=L.splice(from,1)[0];L.splice(to,0,m);save()}catFormKeep()}}})}
+function catFormKeep(){catForm()}
+function catAdd(){const n=$('#nc').value.trim(),L=P()[CK];if(n&&!L.includes(n)){L.push(n);save()}catForm()}
+function catDel(i){const p=P(),c=p[CK][i];if(p.tx.some(t=>t.cat===c)&&!confirm('Existing transactions use "'+c+'". They keep the name. Remove it from the list?'))return;p[CK].splice(i,1);save();catForm()}
+// ---- profiles & images
+const AV={Animals:'🐱🐘🐴🐯🦁🐶🐰🐼🦊🐻🐨🐵🦉🐸',Cartoon:'🤖👻👽🦄🐲🧙🦸🥷🎅🧛🧞🐙',Bank:'🏦🏧💳🪪🧾🏛️💼🔐',Money:'💰💵💶💷💸🤑🪙💎',Finance:'📈📉📊💹🧮📒🗂️🏷️',Colorful:'😎🥳😍🤩😇🌈🔥⭐🚀🎯🍀🌸'};
+const BG=['theme','#e5e7eb','#fee2e2','#ffedd5','#fef3c7','#dcfce7','#ccfbf1','#dbeafe','#ede9fe','#fce7f3','#fde68a','#bbf7d0','#fbcfe8','#c7d2fe'];
+function peForm(id){const p=id?S.p.find(x=>x.id===id):null;PE={id,name:p?p.name:'',av:p?p.av:'🙂',bg:p?p.bg:'theme',bc:p&&p.bc||'',pic:undefined,ban:undefined,picUrl:p&&IMG['pic:'+p.id]||null,banUrl:p&&IMG['ban:'+p.id]||null,file:null,fit:false};drawPE()}
+function keepPE(){const e=$('#pn');if(e)PE.name=e.value}
+function drawPE(){open(`<h3>${PE.id?'Edit':'New'} profile</h3><div style="text-align:center"><div class="ban" style="${banS(PE.banUrl,PE.bc)}"></div><div style="margin-top:-34px">${avh(PE.picUrl,PE.av,PE.bg,76)}</div></div>
+<label>Profile name</label><input id="pn" maxlength="30" value="${esc(PE.name)}">
+<label>Profile picture</label><div class="two"><label class="btn ghost sm" style="margin:0">📷 Upload<input type="file" accept="image/jpeg,image/png,image/webp" hidden onchange="pickImg(this,'pic')"></label><button class="btn ghost sm" onclick="PE.pic=null;PE.picUrl=null;PE.file=null;keepPE();drawPE()">Remove</button></div>
+${PE.file?`<div class="seg" style="margin-top:8px"><button class="${PE.fit?'':'on'}" onclick="PE.fit=false;procImg('pic')">Crop to square</button><button class="${PE.fit?'on':''}" onclick="PE.fit=true;procImg('pic')">Fit inside</button></div>`:''}
+<label>Banner / cover image</label><div class="two"><label class="btn ghost sm" style="margin:0">🖼 Upload banner<input type="file" accept="image/jpeg,image/png,image/webp" hidden onchange="pickImg(this,'ban')"></label><button class="btn ghost sm" onclick="PE.ban=null;PE.banUrl=null;keepPE();drawPE()">Remove</button></div>
+<label>Banner colour</label><div class="sw">${BN.map((g,i)=>`<button title="Banner colour" style="background:${g||'linear-gradient(120deg,#6d3df2,#ec4899)'};border-color:var(--bd)" class="${(PE.bc||'')===g?'on':''}" onclick="keepPE();PE.bc=BN[${i}];drawPE()"></button>`).join('')}</div><label>Avatar background</label><div class="sw">${BG.map(c=>`<button title="${c==='theme'?'Match app theme':c}" style="background:${c==='theme'?'var(--c2)':c};border-color:var(--bd)" class="${PE.bg===c?'on':''}" onclick="keepPE();PE.bg='${c}';drawPE()"></button>`).join('')}</div>
+${Object.entries(AV).map(([k,s])=>`<label>${k}</label><div class="avg">${(s.match(/\p{Extended_Pictographic}(?:\uFE0F|\u200D\p{Extended_Pictographic})*/gu)||[]).map(e=>`<button class="${PE.av===e?'on':''}" onclick="keepPE();PE.av='${e}';PE.pic=null;PE.picUrl=null;PE.file=null;drawPE()">${e}</button>`).join('')}</div>`).join('')}
+<button class="btn" onclick="savePE()">Save profile</button>${PE.id&&S.p.length>1?'<button class="btn red" onclick="delPf()">Delete profile</button>':''}<button class="btn ghost" onclick="shut()">Cancel</button>`)}
+function pickImg(inp,k){keepPE();const fl=inp.files[0];inp.value='';if(!fl)return;
+if(!/^image\/(jpeg|png|webp)$/.test(fl.type)){toast('Only JPG, JPEG, PNG or WebP allowed');return}if(fl.size>10*1048576){toast('File is larger than 10 MB');return}
+openCrop(k,fl)}
+function procImg(k){keepPE();const fl=k==='pic'?PE.file:PE.bfile,u=URL.createObjectURL(fl),im=new Image();
+im.onerror=()=>{URL.revokeObjectURL(u);toast('Could not read this image')};
+im.onload=()=>{URL.revokeObjectURL(u);if(im.width<64||im.height<64){toast('Image is too small (min 64×64)');return}
+const W=k==='pic'?512:1200,H=k==='pic'?512:400,c=document.createElement('canvas');c.width=W;c.height=H;const x=c.getContext('2d');
+if(k==='pic'&&PE.fit){x.fillStyle=(PE.bg==='theme'||PE.bg==='#ede9fe')?(getComputedStyle(document.documentElement).getPropertyValue('--c2').trim()||'#201d48'):PE.bg;x.fillRect(0,0,W,H);const s=Math.min(W/im.width,H/im.height);x.drawImage(im,(W-im.width*s)/2,(H-im.height*s)/2,im.width*s,im.height*s)}
+else{const s=Math.max(W/im.width,H/im.height),w=im.width*s,h=im.height*s;x.drawImage(im,(W-w)/2,(H-h)/2,w,h)}
+c.toBlob(b=>{if(!b){toast('Image processing failed');return}PE[k]=b;PE[k+'Url']=URL.createObjectURL(b);drawPE()},'image/jpeg',0.85)};im.src=u}
+async function savePE(){keepPE();const n=PE.name.trim();if(!n){toast('Enter a profile name');return}let p=PE.id&&S.p.find(x=>x.id===PE.id);if(!p){p=np(uid(),n);S.p.push(p);S.a=p.id}
+p.name=n;p.av=PE.av;p.bg=PE.bg;p.bc=gcss(PE.bc);
+try{for(const k of['pic','ban']){const key=k+':'+p.id;if(PE[k]){await iput(key,PE[k]);IMG[key]=PE[k+'Url']}else if(PE[k]===null){await idel(key);delete IMG[key]}}}catch(e){toast('Name saved, but the image could not be stored (phone storage full?). Try a smaller image.')}
+if(PE.pic===undefined&&PE.avChanged){}save();shut();render()}
+async function delPf(){if(!confirm('Delete this profile and ALL its transactions?'))return;const id=PE.id;S.p=S.p.filter(p=>p.id!==id);if(S.a===id)S.a=S.p[0].id;try{await idel('pic:'+id);await idel('ban:'+id)}catch(e){}delete IMG['pic:'+id];delete IMG['ban:'+id];save();shut();render()}
+// ---- switch profile, backup & restore
+function switchForm(){open(`<h3>🔄 Switch profile</h3>${S.p.map(p=>`<div class="row" style="cursor:pointer" onclick="S.a='${p.id}';save();shut();render()">${avp(p,42)}<div class="mid"><b>${esc(p.name)}</b><small>${p.tx.length} transactions</small></div>${p.id===S.a?'<b style="color:var(--in)">✓</b>':''}</div>`).join('')}<button class="btn" onclick="peForm(null)">+ New profile</button><button class="btn ghost" onclick="shut()">Cancel</button>`)}
+function backupForm(){const lb=S.lb?new Date(S.lb).toLocaleString('en-IN'):'Never';open(`<h3>💾 Backup &amp; Restore</h3><p class="note" style="margin-top:0">The backup file is saved on this device only (usually the Downloads folder, or the folder you pick if your browser asks). Profile photos and banners are included. If the phone is lost the data cannot be recovered, so also keep a copy somewhere else.</p><div class="tg" style="cursor:pointer" onclick="doBackup()"><span><b>Data Backup</b><br><small>Export backup file from the device</small></span><span>›</span></div><label class="tg" style="cursor:pointer;margin:0;font-size:15px;color:var(--tx)"><span><b>Data Recovery</b><br><small>Import backup file to the device</small></span><span>›</span><input type="file" accept=".json,application/json" hidden onchange="pickRestore(this)"></label><p class="note">Last backup: ${lb}</p><button class="btn ghost" onclick="shut()">Close</button>`)}
+async function doBackup(){try{const imgs={};for(const p of S.p)for(const k of['pic:','ban:']){try{const b=await iget(k+p.id);if(b)imgs[k+p.id]=await new Promise((ok,no)=>{const r=new FileReader();r.onload=()=>ok(r.result);r.onerror=no;r.readAsDataURL(b)})}catch(e){}}
+try{const b=await iget('bg:app');if(b)imgs['bg:app']=await new Promise((ok,no)=>{const r=new FileReader();r.onload=()=>ok(r.result);r.onerror=no;r.readAsDataURL(b)})}catch(e){}
+const N=new Date(),n=(S.bn||0)+1,name='PaisaManager_Backup_'+ds(N)+'_'+pad(N.getHours())+pad(N.getMinutes())+'_ID'+String(n).padStart(3,'0')+'.json';
+const blob=new Blob([JSON.stringify({app:'Paisa Manager',v:1,created:N.toISOString(),state:S,images:imgs})],{type:'application/json'});let done=false;
+try{const dl=window.claude&&window.claude.use?await window.claude.use('downloads'):null;if(dl){await dl.save({filename:name,data:blob});done=true}}catch(e){if(e&&e.code==='declined')return}
+if(!done&&window.showSaveFilePicker){try{const h=await window.showSaveFilePicker({suggestedName:name,types:[{description:'Paisa Manager backup',accept:{'application/json':['.json']}}]});const w=await h.createWritable();await w.write(blob);await w.close();done=true}catch(e){if(e&&e.name==='AbortError')return}}
+if(!done){const a=document.createElement('a');a.href=URL.createObjectURL(blob);a.download=name;document.body.appendChild(a);a.click();a.remove();setTimeout(()=>URL.revokeObjectURL(a.href),4000)}
+S.bn=n;S.lb=N.getTime();save();toast('Backup saved: '+name);backupForm()}catch(e){toast('Backup failed: '+(e.message||e))}}
+function pickRestore(inp){const fl=inp.files[0];inp.value='';if(!fl)return;if(fl.size>300*1048576){toast('File too large');return}const r=new FileReader();r.onerror=()=>toast('Could not read the file');r.onload=()=>{let d;try{d=JSON.parse(r.result)}catch(e){toast('This is not a valid backup file');return}
+const s=d&&d.state;if(!d||d.app!=='Paisa Manager'||!s||!Array.isArray(s.p)||!s.p.length||s.p.some(p=>!p||typeof p.id!=='string'||!Array.isArray(p.acc)||!Array.isArray(p.tx))){toast('This is not a valid Paisa Manager backup');return}
+const n=s.p.reduce((a,p)=>a+p.tx.length,0);if(!confirm('Restore backup from '+new Date(d.created).toLocaleString('en-IN')+'?\n'+s.p.length+' profile(s), '+n+' transactions.\nCurrent data on this device will be replaced.'))return;doRestore(d)};r.readAsText(fl)}
+function u2b(u){const m=/^data:(image\/[a-z+.-]+);base64,(.*)$/.exec(u);if(!m)throw 0;const bin=atob(m[2]),a=new Uint8Array(bin.length);for(let i=0;i<bin.length;i++)a[i]=bin.charCodeAt(i);return new Blob([a],{type:m[1]})}
+async function doRestore(d){try{try{localStorage.setItem(K+'_before_restore',JSON.stringify(S))}catch(e){}
+for(const p of S.p)for(const k of['pic:','ban:']){try{await idel(k+p.id)}catch(e){}}
+Object.values(IMG).forEach(u=>{try{URL.revokeObjectURL(u)}catch(e){}});IMG={};S=d.state;save();load();
+for(const [k,v] of Object.entries(d.images||{})){try{if(!/^((pic|ban):[A-Za-z0-9]+|bg:app)$/.test(k))continue;const b=u2b(v);await iput(k,b);IMG[k]=URL.createObjectURL(b)}catch(e){}}
+applyBg();shut();render();toast('Backup restored ✓')}catch(e){toast('Restore failed: '+(e.message||e))}}
+// ---- notifications & reminders
+const unread=()=>(S.nl||[]).filter(x=>!x.r).length;
+function beep(){try{const c=new(window.AudioContext||window.webkitAudioContext)(),o=c.createOscillator(),g=c.createGain();o.connect(g);g.connect(c.destination);o.frequency.value=880;g.gain.value=.08;o.start();setTimeout(()=>{o.stop();c.close()},180)}catch(e){}}
+async function sys(t,b){try{if(!('Notification'in window)||Notification.permission!=='granted')return false;if(navigator.serviceWorker){const r=await navigator.serviceWorker.getRegistration();if(r){await r.showNotification(t,{body:b,tag:'pm',vibrate:[120,60,120]});return true}}new Notification(t,{body:b});return true}catch(e){return false}}
+function ntf(t,b){S.nl=S.nl||[];S.nl.unshift({id:uid(),t,b,ts:Date.now(),r:0});S.nl=S.nl.slice(0,50);save();const e=$('#nb');if(e){e.innerHTML='<b>'+esc(t)+'</b><br><small>'+esc(b)+'</small>';e.style.display='block';clearTimeout(ntf.h);ntf.h=setTimeout(()=>{e.style.display='none'},5000)}try{navigator.vibrate&&navigator.vibrate([120,60,120])}catch(x){}beep();if(view==='home')render();return sys(t,b)}
+function testN(){ntf('Paisa Manager','Test notification ✓').then(ok=>toast(ok?'System notification sent ✓':'In-app alert shown. Phone-bar notification is not available here (allow permission or install as app).'))}
+function notifCenter(){S.nl=S.nl||[];const L=S.nl;L.forEach(x=>x.r=1);save();open(`<h3>🔔 Notifications</h3>${L.map(x=>`<div class="row"><div class="mid"><b>${esc(x.t)}</b><small style="white-space:normal">${esc(x.b)}</small><small>${new Date(x.ts).toLocaleString('en-IN')}</small></div></div>`).join('')||'<div class="empty">No notifications yet</div>'}<button class="btn" onclick="notifForm()">⚙️ Notification settings</button><button class="btn ghost" onclick="S.nl=[];save();notifCenter()">Clear all</button><button class="btn ghost" onclick="shut()">Close</button>`);if(view==='home')render()}
+const BN=['','linear-gradient(120deg,#0ea5e9,#6366f1)','linear-gradient(120deg,#10b981,#06b6d4)','linear-gradient(120deg,#f59e0b,#ef4444)','linear-gradient(120deg,#ec4899,#8b5cf6)','linear-gradient(120deg,#111827,#374151)','linear-gradient(120deg,#22c55e,#a3e635)','linear-gradient(120deg,#f43f5e,#fb923c)','linear-gradient(120deg,#fbc2eb,#a6c1ee)','linear-gradient(120deg,#ffecd2,#fcb69f)','linear-gradient(120deg,#a8edea,#fed6e3)','linear-gradient(120deg,#c3cfe2,#f5d0fe)'];
+const gcss=b=>/^linear-gradient\([#0-9a-zA-Z ,().%-]+\)$/.test(b||'')?b:'';
+const banS=(src,bc)=>src?`background-image:url('${src}')`:(gcss(bc)?`background-image:${gcss(bc)}`:'');
+const bgc=()=>getComputedStyle(document.documentElement).getPropertyValue('--c2').trim()||'#201d48';
+function openCrop(k,fl){keepPE();const u=URL.createObjectURL(fl),im=new Image();im.onerror=()=>{URL.revokeObjectURL(u);toast('Could not read this image')};
+im.onload=()=>{URL.revokeObjectURL(u);if(im.width<64||im.height<64){toast('Image is too small (min 64×64)');return}const pic=k==='pic',W=pic?300:360,H=pic?300:120,c=PE.cr={k,img:im,W,H,oW:pic?512:1200,oH:pic?512:400,base:Math.max(W/im.width,H/im.height),z:1,ox:0,oy:0,mode:'box',free:false,box:null};
+c.ox=(W-im.width*c.base)/2;c.oy=(H-im.height*c.base)/2;crUI()};im.src=u}
+function boxInit(first){const c=PE.cr,im=c.img,s=c.bs=Math.min(360/im.width,420/im.height),cw=c.cw=Math.round(im.width*s),ch=c.ch=Math.round(im.height*s),A=c.oW/c.oH;
+if(first||!c.box){let w=cw*.8,h=w/A;if(h>ch*.8){h=ch*.8;w=h*A}c.box={x:(cw-w)/2,y:(ch-h)/2,w,h}}
+else if(!c.free){const b=c.box;let w=b.w,h=w/A;if(h>ch){h=ch;w=h*A}if(w>cw){w=cw;h=w/A}b.w=w;b.h=h;b.x=Math.min(Math.max(0,b.x),cw-w);b.y=Math.min(Math.max(0,b.y),ch-h)}}
+function crUI(){const c=PE.cr,pic=c.k==='pic';boxInit(!c.box);
+open(`<h3>✂️ Crop ${pic?'profile picture':'cover photo'}</h3><canvas id="cb" width="${c.cw}" height="${c.ch}" style="width:${c.cw}px;max-width:100%;display:block;margin:0 auto;touch-action:none;background:var(--c2);border-radius:12px"></canvas><div class="tg"><span>Free shape (no fixed ratio)</span><input type="checkbox" ${c.free?'checked':''} onchange="PE.cr.free=this.checked;if(!this.checked)boxInit(false);crBox()"></div><p class="note">Drag inside the box to move it. Drag a white corner dot to resize.</p><button class="btn" onclick="crApply()">Use this crop</button><button class="btn ghost" onclick="PE.cr=null;drawPE()">Cancel</button>`);crBox();boxBind()}
+function crBox(){const c=PE.cr,cb=$('#cb'),x=cb.getContext('2d'),b=c.box;x.clearRect(0,0,cb.width,cb.height);x.drawImage(c.img,0,0,c.cw,c.ch);x.fillStyle='rgba(0,0,0,.55)';x.fillRect(0,0,c.cw,b.y);x.fillRect(0,b.y+b.h,c.cw,c.ch-b.y-b.h);x.fillRect(0,b.y,b.x,b.h);x.fillRect(b.x+b.w,b.y,c.cw-b.x-b.w,b.h);x.strokeStyle='#fff';x.lineWidth=2;x.strokeRect(b.x,b.y,b.w,b.h);x.fillStyle='#fff';[[b.x,b.y],[b.x+b.w,b.y],[b.x,b.y+b.h],[b.x+b.w,b.y+b.h]].forEach(q=>{x.beginPath();x.arc(q[0],q[1],9,0,7);x.fill()})}
+function boxBind(){const c=PE.cr,cb=$('#cb');let d=null;const pt=e=>{const r=cb.getBoundingClientRect(),q=cb.width/r.width;return{x:(e.clientX-r.left)*q,y:(e.clientY-r.top)*q,q}};
+cb.onpointerdown=e=>{const p=pt(e),b=c.box,R=26*p.q,cs=[[b.x,b.y],[b.x+b.w,b.y],[b.x,b.y+b.h],[b.x+b.w,b.y+b.h]];let hit=-1,best=R;cs.forEach((q,i)=>{const dd=Math.hypot(q[0]-p.x,q[1]-p.y);if(dd<best){best=dd;hit=i}});
+if(hit>=0)d={t:'r',o:cs[3-hit]};else if(p.x>b.x&&p.x<b.x+b.w&&p.y>b.y&&p.y<b.y+b.h)d={t:'m',dx:p.x-b.x,dy:p.y-b.y};else return;cb.setPointerCapture(e.pointerId)};
+cb.onpointermove=e=>{if(!d)return;const p=pt(e),b=c.box,A=c.oW/c.oH;
+if(d.t==='m'){b.x=Math.min(Math.max(0,p.x-d.dx),c.cw-b.w);b.y=Math.min(Math.max(0,p.y-d.dy),c.ch-b.h)}
+else{const o=d.o,sx=p.x>=o[0]?1:-1,sy=p.y>=o[1]?1:-1,mw=sx>0?c.cw-o[0]:o[0],mh=sy>0?c.ch-o[1]:o[1];let w=Math.min(Math.max(30,Math.abs(p.x-o[0])),mw),hh;
+if(c.free)hh=Math.min(Math.max(30,Math.abs(p.y-o[1])),mh);else{w=Math.min(w,mh*A);hh=w/A}
+b.w=w;b.h=hh;b.x=sx>0?o[0]:o[0]-w;b.y=sy>0?o[1]:o[1]-hh}
+crBox()};cb.onpointerup=cb.onpointercancel=()=>{d=null}}
+function crApply(){const c=PE.cr,o=document.createElement('canvas'),x=o.getContext('2d');x.fillStyle=bgc();
+if(c.mode==='box'){const b=c.box,s=c.bs,sx=b.x/s,sy=b.y/s,sw=b.w/s,sh=b.h/s;if(c.free){o.width=Math.max(16,Math.min(1600,Math.round(sw)));o.height=Math.max(16,Math.round(o.width*sh/sw))}else{o.width=c.oW;o.height=c.oH}x.drawImage(c.img,sx,sy,sw,sh,0,0,o.width,o.height)}
+else{o.width=c.oW;o.height=c.oH;const q=c.oW/c.W,s=c.base*c.z;x.fillRect(0,0,o.width,o.height);x.drawImage(c.img,c.ox*q,c.oy*q,c.img.width*s*q,c.img.height*s*q)}
+o.toBlob(b=>{if(!b){toast('Image processing failed');return}const k=c.k;PE[k]=b;PE[k+'Url']=URL.createObjectURL(b);PE.cr=null;drawPE()},'image/jpeg',0.9)}
+// ---- colour pickers for avatar / banner
+function bgPicker(){return`<input type="color" title="Pick any colour" value="${/^#[0-9a-f]{6}$/i.test(PE.bg)?PE.bg:'#a78bfa'}" style="width:34px;height:30px;padding:0;margin:0" onchange="keepPE();PE.bg=this.value;drawPE()">`}
+function bcPick(){const m=/(#[0-9a-f]{6}),\s*(#[0-9a-f]{6})/i.exec(PE.bc||''),a=m?m[1]:'#6d3df2',b=m?m[2]:'#ec4899';return`<input type="color" id="bc1" title="Banner colour 1" value="${a}" style="width:34px;height:30px;padding:0;margin:0" onchange="bcApply()"><input type="color" id="bc2" title="Banner colour 2" value="${b}" style="width:34px;height:30px;padding:0;margin:0" onchange="bcApply()">`}
+function bcApply(){keepPE();PE.bc='linear-gradient(120deg,'+$('#bc1').value+','+$('#bc2').value+')';drawPE()}
+// ---- app background (cute presets, colour, own image)
+const PRE=[['Pink dots','radial-gradient(#ffffff80 2px,transparent 2.5px) 0 0/22px 22px,linear-gradient(160deg,#ffc3d8,#d9b8ff)'],['Starry night','radial-gradient(#fff 1px,transparent 1.5px) 0 0/46px 46px,radial-gradient(#ffffff90 1px,transparent 1.5px) 23px 23px/46px 46px,linear-gradient(160deg,#1e1b4b,#5b21b6)'],['Sky','linear-gradient(160deg,#a1c4fd,#c2e9fb)'],['Peach','linear-gradient(160deg,#ffecd2,#fcb69f)'],['Lavender','linear-gradient(160deg,#e0c3fc,#8ec5fc)'],['Mint','linear-gradient(160deg,#d4fc79,#96e6a1)']];
+function bgCss(){const b=S.bgs;if(!b)return'';if(b.t==='p'&&PRE[b.v])return PRE[b.v][1];if(b.t==='c'&&/^#[0-9a-f]{6}$/i.test(b.v))return b.v;if(b.t==='i'&&IMG['bg:app'])return`url('${IMG['bg:app']}') center/cover`;return''}
+function applyBg(){const v=bgCss(),d=document.body.style;if(v){d.background=v;d.backgroundAttachment='fixed'}else{d.background='';d.backgroundAttachment=''}}
+function bgForm(){const b=S.bgs||{};open(`<h3>🎨 App background</h3><label>Cute backgrounds</label><div class="sw" style="gap:10px">${PRE.map((p,i)=>`<button title="${p[0]}" style="width:56px;height:56px;border-radius:14px;background:${p[1]};border-color:var(--bd)" class="${b.t==='p'&&b.v===i?'on':''}" onclick="setBg('p',${i})"></button>`).join('')}</div><label>Pick any colour</label><input type="color" style="height:44px;padding:2px" value="${b.t==='c'?b.v:'#8b5cf6'}" onchange="setBg('c',this.value)"><label>Your own image</label><div class="two"><label class="btn ghost sm" style="margin:0">🖼 Upload image<input type="file" accept="image/jpeg,image/png,image/webp" hidden onchange="bgPick(this)"></label><button class="btn ghost sm" onclick="setBg(null)">Default</button></div><p class="note">Cards stay solid so numbers remain easy to read. The image is stored on this device and is included in Backup.</p><button class="btn ghost" onclick="shut()">Close</button>`)}
+function setBg(t,v){S.bgs=t?{t,v}:null;save();applyBg();bgForm()}
+function bgPick(inp){const fl=inp.files[0];inp.value='';if(!fl)return;if(!/^image\/(jpeg|png|webp)$/.test(fl.type)){toast('Only JPG, PNG or WebP allowed');return}if(fl.size>15*1048576){toast('File is larger than 15 MB');return}
+const u=URL.createObjectURL(fl),im=new Image();im.onerror=()=>{URL.revokeObjectURL(u);toast('Could not read this image')};
+im.onload=()=>{URL.revokeObjectURL(u);const s=Math.min(1,1000/Math.max(im.width,im.height)),c=document.createElement('canvas');c.width=Math.round(im.width*s);c.height=Math.round(im.height*s);c.getContext('2d').drawImage(im,0,0,c.width,c.height);
+c.toBlob(async b=>{if(!b){toast('Image processing failed');return}try{await iput('bg:app',b)}catch(e){toast('Could not store the image on this browser');return}if(IMG['bg:app'])try{URL.revokeObjectURL(IMG['bg:app'])}catch(e){}IMG['bg:app']=URL.createObjectURL(b);S.bgs={t:'i',v:1};save();applyBg();bgForm()},'image/jpeg',.85)};im.src=u}
+let SWR=null;
+async function swReg(){if(SWR)return SWR;try{if(!('serviceWorker' in navigator)||!/^https?:$/.test(location.protocol))return null;SWR=await navigator.serviceWorker.register('sw.js');await navigator.serviceWorker.ready;return SWR}catch(e){return null}}
+async function sys(t,b){try{if(!('Notification' in window)||Notification.permission!=='granted')return false;const r=await swReg();if(r){await r.showNotification(t,{body:b,tag:'pm-'+Date.now(),icon:'icon-192.png',badge:'icon-192.png',vibrate:[120,60,120]});return true}new Notification(t,{body:b,icon:'icon-192.png'});return true}catch(e){return false}}
+async function ntf(t,b){toast(t+': '+b);return false}
+function testN(){ntf('Paisa Manager','Test notification ✓').then(ok=>toast(ok?'Notification sent to your phone ✓':'Could not send a phone notification (see settings note).'))}
+function notifForm(){const st='Notification'in window?Notification.permission:'unsupported',n=S.n,tg=(k,l)=>`<div class="tg"><span>${l}</span><input type="checkbox" ${n[k]?'checked':''} onchange="S.n.${k}=this.checked?1:0;save()"></div>`;
+open(`<h3>Notifications</h3><p>Permission status: <b>${st}</b></p>${st==='granted'?'':`<button class="btn" onclick="askPerm()">Enable notifications</button>`}<button class="btn ghost" onclick="testN()">Send test notification</button>
+${tg('tx','New transaction alerts')}${tg('daily','Daily expense reminder')}<div class="tg"><span>Reminder time</span><input type="time" style="width:130px" value="${n.dailyT}" onchange="S.n.dailyT=this.value||'21:00';save()"></div>${tg('budget','Monthly budget reminders (80%)')}${tg('over','Overspending alerts')}${tg('cat','Category budget alerts')}
+<p class="note">Alerts go to your phone's notification bar like other apps, not inside the page. On Android this needs the app hosted on https and installed (Add to Home screen) together with the included sw.js; a plain local .html file or an in-app viewer cannot show them. Honest limits: notifications are delivered while this page is open or still in memory in your browser. Android Chrome may block the basic Notification API unless the page is installed as a PWA from a secure (https) address, and truly closed-app alerts need a push server, which this offline file does not include. Missed reminders fire the next time you open the app.</p><button class="btn ghost" onclick="shut()">Close</button>`)}
+function askPerm(){if(!('Notification'in window)){toast('Notifications not supported in this browser');return}Notification.requestPermission().then(r=>{toast('Permission: '+r);notifForm()}).catch(()=>toast('Browser blocked the permission prompt here'))}
+function remForm(){open(`<h3>Reminders</h3>${S.rem.map(r=>`<div class="row"><div class="mid"><b>${esc(r.title)}</b><small>${r.date} ${r.time} · ${r.rep==='custom'?'every '+r.n+' days':r.rep}</small></div><input type="checkbox" ${r.on?'checked':''} onchange="remTog('${r.id}',this.checked)"><button class="mini" onclick="remEdit('${r.id}')">✎</button><button class="mini" onclick="remDel('${r.id}')">🗑</button></div>`).join('')||'<div class="empty">No reminders</div>'}<button class="btn" onclick="remEdit(null)">+ New reminder</button>`)}
+function remTog(id,v){const r=S.rem.find(x=>x.id===id);r.on=v?1:0;save()}
+function remDel(id){if(!confirm('Delete reminder?'))return;S.rem=S.rem.filter(r=>r.id!==id);save();remForm()}
+function remEdit(id){const N=new Date(),r=id?S.rem.find(x=>x.id===id):{title:'',desc:'',date:ds(N),time:tm(N),rep:'once',n:2,on:1};
+open(`<h3>${id?'Edit':'New'} reminder</h3><label>Title</label><input id="rt" maxlength="60" value="${esc(r.title)}"><label>Description</label><textarea id="rd" rows="2" maxlength="200">${esc(r.desc)}</textarea><div class="two"><div><label>Date</label><input id="rdt" type="date" value="${r.date}" onclick="try{this.showPicker()}catch(e){}"></div><div><label>Time</label><input id="rtm" type="time" value="${r.time}" onclick="try{this.showPicker()}catch(e){}"></div></div>
+<label>Repeat</label><select id="rr" onchange="$('#rn').style.display=this.value==='custom'?'block':'none'">${['once','daily','weekly','monthly','custom'].map(x=>`<option ${x===r.rep?'selected':''}>${x}</option>`).join('')}</select><input id="rn" type="number" min="1" max="365" value="${r.n||2}" placeholder="Every N days" style="display:${r.rep==='custom'?'block':'none'}">
+<div class="tg"><span>Enabled</span><input id="ro" type="checkbox" ${r.on?'checked':''}></div><button class="btn" onclick="remSave('${id||''}')">Save</button><button class="btn ghost" onclick="remForm()">Back</button>`)}
+function remSave(id){const title=$('#rt').value.trim(),date=$('#rdt').value,time=$('#rtm').value;if(!title){toast('Enter a title');return}if(!date||!time){toast('Choose date and time');return}
+const r={id:id||uid(),title,desc:$('#rd').value.trim(),date,time,rep:$('#rr').value,n:Math.max(1,Math.min(365,parseInt($('#rn').value)||1)),on:$('#ro').checked?1:0};if(id)S.rem[S.rem.findIndex(x=>x.id===id)]=r;else S.rem.push(r);save();remForm();tick()}
+function tick(){return;const N=new Date(),t=ds(N);let ch=0;
+S.rem.forEach(r=>{if(!r.on)return;let d=new Date(r.date+'T'+r.time+':00');if(isNaN(d)||d>N)return;ntf('⏰ '+r.title,r.desc||'Reminder due');ch=1;if(r.rep==='once'){r.on=0;return}
+let g=0;while(d<=N&&g++<800){if(r.rep==='daily')d.setDate(d.getDate()+1);else if(r.rep==='weekly')d.setDate(d.getDate()+7);else if(r.rep==='monthly')d.setMonth(d.getMonth()+1);else d.setDate(d.getDate()+Math.max(1,r.n||1))}r.date=ds(d);r.time=tm(d)});
+if(S.n.daily&&S.n.lastDaily!==t&&tm(N)>=S.n.dailyT){S.n.lastDaily=t;ch=1;ntf('Daily expense reminder',"Today's Expense: "+f(sum('ex',t,t))+'. Add today\'s entries.')}
+const p=P(),[a,b]=mr(N);if(S.n.budget&&p.lim&&S.n.lastBud!==t&&sum('ex',a,b)>=p.lim*.8){S.n.lastBud=t;ch=1;ntf('Monthly budget','You have used '+Math.round(sum('ex',a,b)/p.lim*100)+'% of your budget')}
+if(ch){save();if(view==='more'||view==='home')render()}}
+const MAILTO='deepdebofficial2003@gmail.com';
+function drawer(o){$('#dr').classList.toggle('on',!!o)}
+function menu(fn){drawer(0);setTimeout(fn,230)}
+function mailTo(sub,body){const a=document.createElement('a');a.href='mailto:'+MAILTO+'?subject='+encodeURIComponent(sub)+'&body='+encodeURIComponent(body);document.body.appendChild(a);a.click();a.remove()}
+function copyMail(){(navigator.clipboard&&navigator.clipboard.writeText?navigator.clipboard.writeText(MAILTO):Promise.reject()).then(()=>toast('Email address copied'),()=>toast(MAILTO))}
+function privForm(){open(`<h3>🔒 Privacy Policy</h3><p class="note" style="margin-top:0">Last updated: 27 November 2026</p>
+<p><b>What this app is</b><br>Paisa Manager is a personal income and expense tracker that works on your device.</p>
+<p><b>What is stored</b><br>Your transactions, accounts, categories, budgets, profile names, profile photos, banners, background image and settings. All of it is saved only on your own device, in your browser's storage.</p>
+<p><b>What is not collected</b><br>There is no sign-up or login. There are no ads, no analytics, no tracking and no servers. Your financial data is not uploaded or shared with anyone, including the developer.</p>
+<p><b>Photos</b><br>The app reads a photo only when you choose one yourself. It does not use your camera, location or contacts.</p>
+<p><b>Backups</b><br>A backup file is created only when you ask for it and is saved on your device. Anyone who has that file can read your data, so keep it safe.</p>
+<p><b>Contact and rating</b><br>These open a draft in your email app, addressed to ${MAILTO}. Nothing is sent until you press Send. If you send it, the developer receives the message you wrote and your email address.</p>
+<p><b>Deleting your data</b><br>Delete a profile in the app to remove its data, or clear this site's data in your browser settings to remove everything.</p>
+<p><b>Changes</b><br>If this policy changes, the new version will appear here.</p>
+<p><b>Questions</b><br>${MAILTO}</p><button class="btn ghost" onclick="shut()">Close</button>`)}
+function contactForm(){open(`<h3>✉️ Contact us</h3><p class="note" style="margin-top:0">Your message opens as an email draft to <b>${MAILTO}</b>. Press Send in your email app to deliver it.</p><label>Your name (optional)</label><input id="cn" maxlength="40"><label>Message</label><textarea id="cm" rows="5" maxlength="1500" placeholder="Write your message…"></textarea><button class="btn" onclick="contactSend()">Send message</button><button class="btn ghost" onclick="copyMail()">Copy email address</button><button class="btn ghost" onclick="shut()">Close</button>`)}
+function contactSend(){const m=$('#cm').value.trim();if(!m){toast('Write a message first');return}const n=$('#cn').value.trim();mailTo('Paisa Manager - message',m+(n?'\n\n- '+n:'')+'\n\n(Sent from the Paisa Manager app)');toast('Email app opened. Tap Send there.')}
+let RT={n:0};
+function rateForm(){RT={n:(S.rate&&S.rate.n)||0};drawRate()}
+function drawRate(){const L=['Tap a star','Poor','Fair','Good','Very good','Excellent'],c=($('#rc')||{}).value||'';
+open(`<h3>⭐ Rate Paisa Manager</h3><p class="note" style="margin-top:0">Choose 1 to 5 stars. Your rating is saved on this device and sent to the developer by email.</p><div style="display:flex;justify-content:center;gap:6px;margin:14px 0 4px">${[1,2,3,4,5].map(i=>`<button style="border:0;background:none;font-size:44px;line-height:1;color:${i<=RT.n?'#fbbf24':'var(--mu)'}" onclick="RT.n=${i};drawRate()" aria-label="${i} star">${i<=RT.n?'★':'☆'}</button>`).join('')}</div><div style="text-align:center;min-height:22px"><b>${L[RT.n]}</b></div><label>Comment (optional)</label><textarea id="rc" rows="3" maxlength="800"></textarea><button class="btn" onclick="rateSend()">Submit rating</button><button class="btn ghost" onclick="shut()">Close</button>`);if(c)$('#rc').value=c}
+function rateSend(){if(!RT.n){toast('Tap a star first');return}const c=$('#rc').value.trim();S.rate={n:RT.n,ts:Date.now()};save();mailTo('Paisa Manager rating: '+RT.n+'/5','Rating: '+'★'.repeat(RT.n)+'☆'.repeat(5-RT.n)+' ('+RT.n+'/5)'+(c?'\n\nComment: '+c:'')+'\n\n(Sent from the Paisa Manager app)');toast('Thanks! Tap Send in your email app.')}
+load();document.documentElement.dataset.t=S.th;render();loadImgs();applyBg();
+</script></body></html>
